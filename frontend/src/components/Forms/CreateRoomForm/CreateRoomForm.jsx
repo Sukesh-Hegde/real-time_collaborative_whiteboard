@@ -10,7 +10,7 @@ const CreateRoomForm = () => {
           placeholder="Enter your name"
         />
       </div>
-      <div className="form-group border">
+      <div className="form-group border rounded-2">
         <div className="input-group d-flex align-items-center jusitfy-content-center">
           <input
             type="text"
