@@ -9,8 +9,33 @@ const WhiteBord = ({
   elements,
   setElements,
   tool,
-  color
+  color,
+  user,
+  socket,
 }) => {
+  const [img, setImg] = useState(null);
+
+  useEffect(() => {
+    socket.on("whiteBoardDataResponse", (data) => {
+      setImg(data.imgURL);
+    });
+  }, []);
+
+  if (!user?.presenter) {
+    return (
+      <div className="border border-dark border-3 h-100 w-100 overflow-hidden">
+        <img
+          src={img}
+          alt="Real time white board image shared by presenter"
+          className="w-100 h-100"
+          //  style={{
+          //    height: window.innerHeight * 2,
+          //    width: "285%",
+          //  }}
+        />
+      </div>
+    );
+  }
   const [isDrawing, setIsDrawing] = useState(false);
 
   useEffect(() => {
@@ -28,56 +53,62 @@ const WhiteBord = ({
 
   useEffect(() => {
     ctxRef.current.strokeStyle = color;
-  },[color]);
+  }, [color]);
 
   useLayoutEffect(() => {
-    const roughCanvas = rough.canvas(canvasRef.current);
-    if (elements.length > 0) {
-      ctxRef.current.clearRect(
-        0,
-        0,
-        canvasRef.current.width,
-        canvasRef.current.height
-      );
-    }
+    if (canvasRef) {
+      const roughCanvas = rough.canvas(canvasRef.current);
 
-    elements.forEach((element) => {
-      if (element.type === "rect") {
-        roughCanvas.draw(
-          roughGenerator.rectangle(
-            element.offsetX,
-            element.offsetY,
-            element.width,
-            element.height,
-            {
-              stroke: element.stroke,
-              strokeWidth: 5,
-              roughness: 0,
-            }
-          )
-        );
-      } else if (element.type === "pencil") {
-        roughCanvas.linearPath(element.path, {
-          stroke: element.stroke,
-          strokeWidth: 5,
-          roughness: 0,
-        });
-      } else if (element.type === "line") {
-        roughCanvas.draw(
-          roughGenerator.line(
-            element.offsetX,
-            element.offsetY,
-            element.width,
-            element.height,
-            {
-              stroke: element.stroke,
-              strokeWidth: 5,
-              roughness: 0,
-            }
-          )
+      if (elements.length > 0) {
+        ctxRef.current.clearRect(
+          0,
+          0,
+          canvasRef.current.width,
+          canvasRef.current.height
         );
       }
-    });
+
+      elements.forEach((element) => {
+        if (element.type === "rect") {
+          roughCanvas.draw(
+            roughGenerator.rectangle(
+              element.offsetX,
+              element.offsetY,
+              element.width,
+              element.height,
+              {
+                stroke: element.stroke,
+                strokeWidth: 5,
+                roughness: 0,
+              }
+            )
+          );
+        } else if (element.type === "pencil") {
+          roughCanvas.linearPath(element.path, {
+            stroke: element.stroke,
+            strokeWidth: 5,
+            roughness: 0,
+          });
+        } else if (element.type === "line") {
+          roughCanvas.draw(
+            roughGenerator.line(
+              element.offsetX,
+              element.offsetY,
+              element.width,
+              element.height,
+              {
+                stroke: element.stroke,
+                strokeWidth: 5,
+                roughness: 0,
+              }
+            )
+          );
+        }
+      });
+
+      const canvasImage = canvasRef.current.toDataURL();
+      socket.emit("whiteboardData", canvasImage);
+    }
   }, [elements]);
 
   const handleMouseDown = (e) => {
@@ -103,7 +134,7 @@ const WhiteBord = ({
           offsetY,
           width: offsetX,
           height: offsetY,
-          stroke:  color ,
+          stroke: color,
         },
       ]);
     } else if (tool === "rect") {
@@ -115,7 +146,7 @@ const WhiteBord = ({
           offsetY,
           width: 0,
           height: 0,
-          stroke:  color ,
+          stroke: color,
         },
       ]);
     }

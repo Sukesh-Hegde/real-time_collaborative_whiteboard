@@ -1,9 +1,7 @@
-
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const JoinRoomForm = ({ uuid, socket, setUser }) => {
-
   const [roomId, setRoomId] = useState("");
   const [name, setName] = useState("");
 
@@ -12,31 +10,31 @@ const JoinRoomForm = ({ uuid, socket, setUser }) => {
   const handleRoomJoin = (e) => {
     e.preventDefault();
 
-  //   // open peer connccction with socket.io server
-  //   const myPeer = new Peer(undefined, {
-  //     host: "/",
-  //     port: 5001,
-  //     path: "/",
-  //     secure: false,
-  //   });
+    //   // open peer connccction with socket.io server
+    //   const myPeer = new Peer(undefined, {
+    //     host: "/",
+    //     port: 5001,
+    //     path: "/",
+    //     secure: false,
+    //   });
 
-  //   setMyPeer(myPeer);
+    //   setMyPeer(myPeer);
 
-  //   myPeer.on("open", (id) => {
-      const roomData = {
-        name,
-        roomId,
-        userId: uuid(),
-        host: false,
-        presenter: false,
-      };
-      setUser(roomData);
-      navigate(`/${roomId}`);
-      socket.emit("userJoined", roomData);
-  //   });
-  //   myPeer.on("error", (err) => {
-  //     console.log("peer connection error", err);
-  //     myPeer.reconnect();
+    //   myPeer.on("open", (id) => {
+    const roomData = {
+      name,
+      roomId,
+      userId: uuid(),
+      host: false,
+      presenter: false,
+    };
+    setUser(roomData);
+    navigate(`/${roomId}`);
+    socket.emit("userJoined", roomData);
+    //   });
+    //   myPeer.on("error", (err) => {
+    //     console.log("peer connection error", err);
+    //     myPeer.reconnect();
     // });
   };
   return (
@@ -70,4 +68,4 @@ const JoinRoomForm = ({ uuid, socket, setUser }) => {
   );
 };
 
-export default JoinRoomForm
+export default JoinRoomForm;

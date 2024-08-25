@@ -66,7 +66,7 @@ const App = () => {
           path="/"
           element={<Forms uuid={uuid} socket={socket} setUser={setUser} />}
         />
-        <Route path="/:id" element={<RoomPage />} />
+        <Route path="/:id" element={<RoomPage socket={socket} user={user} />} />
       </Routes>
     </div>
   );

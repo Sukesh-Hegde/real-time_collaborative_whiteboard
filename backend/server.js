@@ -12,10 +12,12 @@ app.get("/", (req,res)=>{
     )
 });
 
+let roomIdGlobal,imgURLGlobal
+
 io.on("connection", (socket)=> {
  socket.on("userJoined", (data) => {
    const { name, userId, roomId, host, presenter } = data;
-//    roomIdGlobal = roomId;
+   roomIdGlobal = roomId;
    socket.join(roomId);
 //    const users = addUser({
 //      name,
@@ -29,14 +31,21 @@ io.on("connection", (socket)=> {
 //    console.log({ name, userId });
 //    socket.broadcast.to(roomId).emit("allUsers", users);
 //    setTimeout(() => {
-//      socket.broadcast
-//        .to(roomId)
-//        .emit("userJoinedMessageBroadcasted", { name, userId, users });
-//      socket.broadcast.to(roomId).emit("whiteBoardDataResponse", {
-//        imgURL: imgURLGlobal,
-//      });
+   //   socket.broadcast
+   //     .to(roomId)
+   //     .emit("userJoinedMessageBroadcasted", { name, userId, users });
+     socket.broadcast.to(roomId).emit("whiteBoardDataResponse", {
+       imgURL: imgURLGlobal,
+     });
 //    }, 1000);
  });   
+
+   socket.on("whiteboardData", (data) => {
+     imgURLGlobal = data;
+     socket.broadcast.to(roomIdGlobal).emit("whiteBoardDataResponse", {
+       imgURL: data,
+     });
+   });
 })
 
 const port = process.env.PORT || 5000;
