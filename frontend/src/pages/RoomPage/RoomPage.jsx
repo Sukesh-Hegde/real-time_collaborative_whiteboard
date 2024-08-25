@@ -1,13 +1,20 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import "./index.css";
 import WhiteBord from "../../components/Whiteboard/WhiteBord";
 
 const RoomPage = () => {
+const canvasRef = useRef(null);
+const ctxRef = useRef(null);
+
   const [tool, setTool] = useState("pencil");
   const [color, setColor] = useState("black");
+  const [elements, setElements] = useState([])
   return (
     <div className="row">
-      <h1 className="text-center py-5">White Board Sharing App <span className="text-primary">[Users Online:0]</span></h1>
+      <h1 className="text-center py-5">
+        White Board Sharing App{" "}
+        <span className="text-primary">[Users Online:0]</span>
+      </h1>
       <div className="col-md-10 mx-auto bg-secondary px-5 mb-3 d-flex align-items-center jusitfy-content-center">
         <div className="d-flex col-md-2 justify-content-center gap-1">
           <div className="d-flex gap-1 align-items-center">
@@ -87,7 +94,12 @@ const RoomPage = () => {
         </div>
       </div>
       <div className="col-md-10 mx-auto canvas-box mt-4 ">
-        <WhiteBord />
+        <WhiteBord
+          canvasRef={canvasRef}
+          ctxRef={ctxRef}
+          elements={elements}
+          setElements={setElements}
+        />
       </div>
     </div>
   );
