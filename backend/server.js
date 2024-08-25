@@ -13,8 +13,30 @@ app.get("/", (req,res)=>{
 });
 
 io.on("connection", (socket)=> {
-    console.log("user connected");
-    
+ socket.on("userJoined", (data) => {
+   const { name, userId, roomId, host, presenter } = data;
+//    roomIdGlobal = roomId;
+   socket.join(roomId);
+//    const users = addUser({
+//      name,
+//      userId,
+//      roomId,
+//      host,
+//      presenter,
+//      socketId: socket.id,
+//    });
+   socket.emit("userIsJoined", { success: true });
+//    console.log({ name, userId });
+//    socket.broadcast.to(roomId).emit("allUsers", users);
+//    setTimeout(() => {
+//      socket.broadcast
+//        .to(roomId)
+//        .emit("userJoinedMessageBroadcasted", { name, userId, users });
+//      socket.broadcast.to(roomId).emit("whiteBoardDataResponse", {
+//        imgURL: imgURLGlobal,
+//      });
+//    }, 1000);
+ });   
 })
 
 const port = process.env.PORT || 5000;

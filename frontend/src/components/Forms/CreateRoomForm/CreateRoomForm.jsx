@@ -1,42 +1,46 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const CreateRoomForm = ({uuid}) => {
-    const [roomId, setRoomId] = useState(uuid());
-    const [name, setName] = useState("");
+const CreateRoomForm = ({ uuid, socket, setUser }) => {
+  const [roomId, setRoomId] = useState(uuid());
+  const [name, setName] = useState("");
 
-    const handleCreateRoom = (e) => {
-      e.preventDefault();
+    const navigate = useNavigate();
 
-      // {name,roomId, userId, host, presenter}
 
-      // const myPeer = new Peer(undefined, {
-      //   host: "/",
-      //   port: 5001,
-      //   path: "/",
-      //   secure: false,
-      // });
+  const handleCreateRoom = (e) => {
+    e.preventDefault();
 
-      // setMyPeer(myPeer);
+    // {name,roomId, userId, host, presenter}
 
-      // myPeer.on("open", (id) => {
-        const roomData = {
-          name,
-          roomId,
-          userId: uuid(),
-          host: true,
-          presenter: true,
-        };
+    // const myPeer = new Peer(undefined, {
+    //   host: "/",
+    //   port: 5001,
+    //   path: "/",
+    //   secure: false,
+    // });
 
-      //   setUser(roomData);
-      //   navigate(`/${roomId}`);
-        console.log(roomData);
-      //   socket.emit("userJoined", roomData);
-      // });
-      // myPeer.on("error", (err) => {
-      //   console.log("peer connection error", err);
-      //   this.myPeer.reconnect();
-      // });
+    // setMyPeer(myPeer);
+
+    // myPeer.on("open", (id) => {
+    const roomData = {
+      name,
+      roomId,
+      userId: uuid(),
+      host: true,
+      presenter: true,
     };
+
+      setUser(roomData);
+      navigate(`/${roomId}`);
+    console.log(roomData);
+    socket.emit("userJoined", roomData);
+    // });
+    // myPeer.on("error", (err) => {
+    //   console.log("peer connection error", err);
+    //   this.myPeer.reconnect();
+    // });
+  };
   return (
     <form className="form col-md-12 mt-5">
       <div className="form-group">
