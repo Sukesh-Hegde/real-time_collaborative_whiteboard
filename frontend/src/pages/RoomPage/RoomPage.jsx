@@ -99,6 +99,7 @@ const ctxRef = useRef(null);
           ctxRef={ctxRef}
           elements={elements}
           setElements={setElements}
+          tool={tool}
         />
       </div>
     </div>
