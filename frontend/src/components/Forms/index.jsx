@@ -3,20 +3,19 @@ import "./index.css"
 import CreateRoomForm from './CreateRoomForm/CreateRoomForm'
 import JoinRoomForm from './JoinRoomForm/JoinRoomForm'
 
-const Forms = () => {
+const Forms = ({uuid}) => {
   return (
-    <div className='row h-100 pt-5'>
+    <div className="row h-100 pt-5">
       <div className="col-md-4 mt-5 form-box p-5 border border-primary rounded-2 mx-auto d-flex flex-column align-items-center">
         <h1 className="text-primary fw-bold"> Create Room</h1>
-        <CreateRoomForm/>
+        <CreateRoomForm uuid={uuid}/>
       </div>
-        <div className="col-md-4 mt-5 form-box p-5 border border-primary rounded-2 mx-auto d-flex flex-column align-items-center">
+      <div className="col-md-4 mt-5 form-box p-5 border border-primary rounded-2 mx-auto d-flex flex-column align-items-center">
         <h1 className="text-primary fw-bold"> Join Room</h1>
-        <JoinRoomForm/>
-        </div> 
-
+        <JoinRoomForm />
+      </div>
     </div>
-  )
+  );
 }
 
 export default Forms
