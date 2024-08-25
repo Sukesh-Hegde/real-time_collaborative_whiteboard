@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import rough from "roughjs";
 
 const WhiteBord = ({ canvasRef, ctxRef, elements, setElements }) => {
@@ -11,7 +11,13 @@ const WhiteBord = ({ canvasRef, ctxRef, elements, setElements }) => {
     ctxRef.current = ctx;
   }, []);
 
+ useLayoutEffect(() =>{
+  const roughCanvas = rough.canvas(canvasRef.current);
 
+  elements.forEach((element) => {
+    roughCanvas.linearPath(element.path)
+  });
+ },[elements])
 
   const handleMouseDown = (e) => {
     const { offsetX, offsetY } = e.nativeEvent;
@@ -56,7 +62,6 @@ const WhiteBord = ({ canvasRef, ctxRef, elements, setElements }) => {
 
   return (
     <>
-      {JSON.stringify(elements)}
       <canvas
         ref={canvasRef}
         onMouseDown={handleMouseDown}
