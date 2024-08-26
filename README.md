@@ -30,7 +30,6 @@ Real-Time Communication: Socket.io
 
 
 ## ScreenShots
-![Screenshot 2024-08-26 at 11 41 56 PM](https://github.com/user-attachments/assets/4e97dbce-8edc-4a9d-8e6c-373249fe5288)
 
 ![Screenshot 2024-08-26 at 11 41 56 PM (2)](https://github.com/user-attachments/assets/95bb1602-f941-46cf-8afe-2675cb2608c2)
 
