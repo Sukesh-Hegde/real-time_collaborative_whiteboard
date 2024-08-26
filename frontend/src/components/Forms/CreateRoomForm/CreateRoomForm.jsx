@@ -5,8 +5,18 @@ const CreateRoomForm = ({ uuid, socket, setUser }) => {
   const [roomId, setRoomId] = useState(uuid());
   const [name, setName] = useState("");
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
+  const handleCopy = () => {
+    navigator.clipboard
+      .writeText(roomId)
+      .then(() => {
+        alert("Room ID copied to clipboard!");
+      })
+      .catch((err) => {
+        console.error("Failed to copy: ", err);
+      });
+  };
 
   const handleCreateRoom = (e) => {
     e.preventDefault();
@@ -19,15 +29,10 @@ const CreateRoomForm = ({ uuid, socket, setUser }) => {
       presenter: true,
     };
 
-      setUser(roomData);
-      navigate(`/${roomId}`);
+    setUser(roomData);
+    navigate(`/${roomId}`);
     console.log(roomData);
     socket.emit("userJoined", roomData);
-    // });
-    // myPeer.on("error", (err) => {
-    //   console.log("peer connection error", err);
-    //   this.myPeer.reconnect();
-    // });
   };
   return (
     <form className="form col-md-12 mt-5">
@@ -60,6 +65,7 @@ const CreateRoomForm = ({ uuid, socket, setUser }) => {
             <button
               className="btn btn-outline-danger btn-sm me-2"
               type="button"
+              onClick={handleCopy}
             >
               copy
             </button>
