@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import "./index.css";
 import WhiteBord from "../../components/Whiteboard/WhiteBord";
+import Chat from "../../components/ChatBar/Chat";
 
 const RoomPage = ({ user, socket, users }) => {
   const canvasRef = useRef(null);
@@ -11,7 +12,7 @@ const RoomPage = ({ user, socket, users }) => {
   const [elements, setElements] = useState([]);
   const [history, setHistory] = useState([]);
   const [openedUserTab, setOpenedUserTab] = useState(false);
-  // const [openedChatTab, setOpenedChatTab] = useState(false);
+  const [openedChatTab, setOpenedChatTab] = useState(false);
   // const [stream, setStream] = useState(null);
 
   // useEffect(()=>{
@@ -81,6 +82,21 @@ const RoomPage = ({ user, socket, users }) => {
       >
         Users
       </button>
+      <button
+        type="button"
+        className="btn btn-primary"
+        style={{
+          display: "block",
+          position: "absolute",
+          top: "5%",
+          left: "10%",
+          height: "40px",
+          width: "100px",
+        }}
+        onClick={() => setOpenedChatTab(true)}
+      >
+        Chats
+      </button>
       {openedUserTab && (
         <div
           className="position-fixed top-0 h-100 text-white bg-dark"
@@ -101,6 +117,9 @@ const RoomPage = ({ user, socket, users }) => {
             ))}
           </div>
         </div>
+      )}
+      {openedChatTab && (
+        <Chat setOpenedChatTab={setOpenedChatTab} socket={socket} />
       )}
       <h1 className="text-center py-5">
         White Board Sharing App{" "}
