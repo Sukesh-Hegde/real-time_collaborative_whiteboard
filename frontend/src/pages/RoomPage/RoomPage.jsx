@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import "./index.css";
 import WhiteBord from "../../components/Whiteboard/WhiteBord";
 
-const RoomPage = ({ user, socket}) => {
+const RoomPage = ({ user, socket, users }) => {
   const canvasRef = useRef(null);
   const ctxRef = useRef(null);
 
@@ -10,6 +10,9 @@ const RoomPage = ({ user, socket}) => {
   const [color, setColor] = useState("black");
   const [elements, setElements] = useState([]);
   const [history, setHistory] = useState([]);
+  const [openedUserTab, setOpenedUserTab] = useState(false);
+  // const [openedChatTab, setOpenedChatTab] = useState(false);
+  // const [stream, setStream] = useState(null);
 
   const handleClearCanvas = () => {
     const canvas = canvasRef.current;
@@ -41,7 +44,7 @@ const RoomPage = ({ user, socket}) => {
     <div className="row">
       <h1 className="text-center py-5">
         White Board Sharing App{" "}
-        <span className="text-primary">[Users Online:0]</span>
+        <span className="text-primary">[Users Online:{users.length}]</span>
       </h1>
       {user?.presenter && (
         <div className="col-md-10 mx-auto bg-secondary px-5 mb-3 d-flex align-items-center jusitfy-content-center">

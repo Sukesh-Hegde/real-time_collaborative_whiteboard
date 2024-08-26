@@ -17,20 +17,26 @@ const socket = io(server, connectionOptions);
 
 const App = () => {
   const [user, setUser] = useState(null);
+  const [users, setUsers] = useState([]);
+  // const [peers, setPeers] = useState({});
+  // const [myPeer, setMyPeer] = useState(null);
+  // const [openVideo, setOpenVideo] = useState(true);
+
+  // const videoGrid = useRef(null);
 
   useEffect(() => {
     socket.on("userIsJoined", (data) => {
       if (data.success) {
         console.log("userJoined");
-        // setUsers(data.users);
+        setUsers(data.users);
       } else {
         console.log("userJoined error");
       }
     });
 
-    // socket.on("allUsers", (data) => {
-    //   setUsers(data);
-    // });
+    socket.on("allUsers", (data) => {
+      setUsers(data);
+    });
 
     // socket.on("userLeftMessageBroadcasted", (data) => {
     //   console.log(`${data.name} ${data.userId} left the room`);
@@ -66,7 +72,7 @@ const App = () => {
           path="/"
           element={<Forms uuid={uuid} socket={socket} setUser={setUser} />}
         />
-        <Route path="/:id" element={<RoomPage socket={socket} user={user} />} />
+        <Route path="/:id" element={<RoomPage socket={socket} user={user} users={users}/>} />
       </Routes>
     </div>
   );

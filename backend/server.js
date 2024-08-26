@@ -3,6 +3,7 @@ const app = express();
 
 const server = require('http').createServer(app);
 const { Server } = require("socket.io");
+const { addUser } = require("./utils/users");
 const io = new Server(server);
 
 //routes
@@ -19,17 +20,17 @@ io.on("connection", (socket)=> {
    const { name, userId, roomId, host, presenter } = data;
    roomIdGlobal = roomId;
    socket.join(roomId);
-//    const users = addUser({
-//      name,
-//      userId,
-//      roomId,
-//      host,
-//      presenter,
-//      socketId: socket.id,
-//    });
-   socket.emit("userIsJoined", { success: true });
+   const users = addUser({
+     name,
+     userId,
+     roomId,
+     host,
+     presenter,
+     socketId: socket.id,
+   });
+   socket.emit("userIsJoined", { success: true, users});
 //    console.log({ name, userId });
-//    socket.broadcast.to(roomId).emit("allUsers", users);
+   socket.broadcast.to(roomId).emit("allUsers", users);
 //    setTimeout(() => {
    //   socket.broadcast
    //     .to(roomId)
