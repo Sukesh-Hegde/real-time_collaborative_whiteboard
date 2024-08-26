@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useState } from "react";
 import rough from "roughjs";
+import './index.css'
 
 const roughGenerator = rough.generator();
 
@@ -214,7 +215,7 @@ const WhiteBord = ({
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
-      className="border border-black h-100 w-100 overflow-hidden"
+      className="border border-black h-100 w-100 overflow-hidden background-image"
     >
       <canvas ref={canvasRef}></canvas>
     </div>
