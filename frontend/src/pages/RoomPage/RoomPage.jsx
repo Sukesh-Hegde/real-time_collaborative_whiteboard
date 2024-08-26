@@ -113,6 +113,7 @@ const RoomPage = ({ user, socket, users }) => {
                 id="pencil"
                 value="pencil"
                 className="mt-1"
+                checked={tool === "pencil"}
                 onChange={(e) => setTool(e.target.value)}
               />
             </div>
