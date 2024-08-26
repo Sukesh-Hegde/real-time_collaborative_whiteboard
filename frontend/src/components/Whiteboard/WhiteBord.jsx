@@ -20,87 +20,89 @@ const WhiteBord = ({
     socket.on("whiteBoardDataResponse", (data) => {
       setImg(data.imgURL);
     });
-  }, []);
+  }, [socket]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
+    if (!canvas) return; 
     canvas.height = window.innerHeight * 2;
     canvas.width = window.innerWidth * 2;
     const ctx = canvas.getContext("2d");
 
     ctx.strokeStyle = color;
-    ctx.linewidth = 1;
+    ctx.lineWidth = 1; 
     ctx.lineCap = "round";
 
     ctxRef.current = ctx;
-  }, []);
+  }, [canvasRef, color]);
 
   useEffect(() => {
-    ctxRef.current.strokeStyle = color;
+    if (ctxRef.current) {
+      ctxRef.current.strokeStyle = color;
+    }
   }, [color]);
 
   useLayoutEffect(() => {
-    if (canvasRef) {
-      const roughCanvas = rough.canvas(canvasRef.current);
+    if (!canvasRef.current) return; 
+    const roughCanvas = rough.canvas(canvasRef.current);
 
-      if (elements.length > 0) {
-        ctxRef.current.clearRect(
-          0,
-          0,
-          canvasRef.current.width,
-          canvasRef.current.height
+    if (elements.length > 0) {
+      ctxRef.current.clearRect(
+        0,
+        0,
+        canvasRef.current.width,
+        canvasRef.current.height
+      );
+    }
+
+    elements.forEach((element) => {
+      if (element.type === "rect") {
+        roughCanvas.draw(
+          roughGenerator.rectangle(
+            element.offsetX,
+            element.offsetY,
+            element.width,
+            element.height,
+            {
+              stroke: element.stroke,
+              strokeWidth: 5,
+              roughness: 0,
+            }
+          )
+        );
+      } else if (element.type === "pencil") {
+        roughCanvas.linearPath(element.path, {
+          stroke: element.stroke,
+          strokeWidth: 5,
+          roughness: 0,
+        });
+      } else if (element.type === "line") {
+        roughCanvas.draw(
+          roughGenerator.line(
+            element.offsetX,
+            element.offsetY,
+            element.width,
+            element.height,
+            {
+              stroke: element.stroke,
+              strokeWidth: 5,
+              roughness: 0,
+            }
+          )
         );
       }
+    });
 
-      elements.forEach((element) => {
-        if (element.type === "rect") {
-          roughCanvas.draw(
-            roughGenerator.rectangle(
-              element.offsetX,
-              element.offsetY,
-              element.width,
-              element.height,
-              {
-                stroke: element.stroke,
-                strokeWidth: 5,
-                roughness: 0,
-              }
-            )
-          );
-        } else if (element.type === "pencil") {
-          roughCanvas.linearPath(element.path, {
-            stroke: element.stroke,
-            strokeWidth: 5,
-            roughness: 0,
-          });
-        } else if (element.type === "line") {
-          roughCanvas.draw(
-            roughGenerator.line(
-              element.offsetX,
-              element.offsetY,
-              element.width,
-              element.height,
-              {
-                stroke: element.stroke,
-                strokeWidth: 5,
-                roughness: 0,
-              }
-            )
-          );
-        }
-      });
-
-      const canvasImage = canvasRef.current.toDataURL();
-      socket.emit("whiteboardData", canvasImage);
-    }
-  }, [elements]);
+    const canvasImage = canvasRef.current.toDataURL();
+    socket.emit("whiteboardData", canvasImage);
+  }, [elements, canvasRef, socket]);
 
   if (!user?.presenter) {
     return (
       <div className="border border-dark border-3 h-100 w-100 overflow-hidden">
         <img
           src={img}
-          alt="Real time white board image shared by presenter"
+          alt="Real-time whiteboard image shared by presenter"
           style={{
             height: window.innerHeight * 2,
             width: "285%",
@@ -203,8 +205,7 @@ const WhiteBord = ({
     }
   };
 
-  const handleMouseUp = (e) => {
-    const { offsetX, offsetY } = e.nativeEvent;
+  const handleMouseUp = () => {
     setIsDrawing(false);
   };
 
