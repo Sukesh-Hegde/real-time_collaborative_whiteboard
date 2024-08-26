@@ -42,6 +42,42 @@ const RoomPage = ({ user, socket, users }) => {
 
   return (
     <div className="row">
+      <button
+        type="button"
+        className="btn btn-dark"
+        style={{
+          display: "block",
+          position: "absolute",
+          top: "5%",
+          left: "3%",
+          height: "40px",
+          width: "100px",
+        }}
+        onClick={() => setOpenedUserTab(true)}
+      >
+        Users
+      </button>
+      {openedUserTab && (
+        <div
+          className="position-fixed top-0 h-100 text-white bg-dark"
+          style={{ width: "250px", left: "0%" }}
+        >
+          <button
+            type="button"
+            onClick={() => setOpenedUserTab(false)}
+            className="btn btn-light btn-block w-100 mt-5"
+          >
+            Close
+          </button>
+          <div className="w-100 mt-5 pt-5">
+            {users.map((usr, index) => (
+              <p key={index * 99} className="my-2 text-center w-100 ">
+                {usr.name} {user && user.userId === usr.userId && "(You)"}
+              </p>
+            ))}
+          </div>
+        </div>
+      )}
       <h1 className="text-center py-5">
         White Board Sharing App{" "}
         <span className="text-primary">[Users Online:{users.length}]</span>
