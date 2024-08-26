@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./index.css";
 import WhiteBord from "../../components/Whiteboard/WhiteBord";
 
@@ -13,6 +13,12 @@ const RoomPage = ({ user, socket, users }) => {
   const [openedUserTab, setOpenedUserTab] = useState(false);
   // const [openedChatTab, setOpenedChatTab] = useState(false);
   // const [stream, setStream] = useState(null);
+
+  // useEffect(()=>{
+  //   return () =>{
+  //     socket.emit("userLeft",user)
+  //   }
+  // },[])
 
   const handleClearCanvas = () => {
     const canvas = canvasRef.current;
@@ -39,6 +45,24 @@ const RoomPage = ({ user, socket, users }) => {
     ]);
     setHistory((prevHistory) => prevHistory.slice(0, prevHistory.length - 1));
   };
+
+  // useEffect(() => {
+  //   socket.on("userJoinedMessageBroadcasted", (data) => {
+  //     setUsers(data.users);
+  //     navigator.mediaDevices
+  //       .getUserMedia({
+  //         video: true,
+  //         audio: true,
+  //       })
+  //       .then((stream) => {
+  //         console.log(`${data.name} ${data.userId} joined the room`);
+  //         toast.info(`${data.name} joined the room`);
+  //         console.log("working");
+  //         connectToNewUser(data.userId, data.name, stream);
+  //         console.log("working");
+  //       });
+  //   });
+  // }, []);
 
   return (
     <div className="row">

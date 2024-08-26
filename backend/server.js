@@ -3,7 +3,7 @@ const app = express();
 
 const server = require('http').createServer(app);
 const { Server } = require("socket.io");
-const { addUser } = require("./utils/users");
+const { addUser, getUser, removeUser } = require("./utils/users");
 const io = new Server(server);
 
 //routes
@@ -32,9 +32,9 @@ io.on("connection", (socket)=> {
 //    console.log({ name, userId });
    socket.broadcast.to(roomId).emit("allUsers", users);
 //    setTimeout(() => {
-   //   socket.broadcast
-   //     .to(roomId)
-   //     .emit("userJoinedMessageBroadcasted", { name, userId, users });
+     socket.broadcast
+       .to(roomId)
+       .emit("userJoinedMessageBroadcasted", { name});
      socket.broadcast.to(roomId).emit("whiteBoardDataResponse", {
        imgURL: imgURLGlobal,
      });
@@ -47,6 +47,17 @@ io.on("connection", (socket)=> {
        imgURL: data,
      });
    });
+
+     socket.on("disconnect", () => {
+       const user = getUser(socket.id);
+       if (user) {
+         removeUser(socket.id);
+         socket.broadcast.to(roomIdGlobal).emit("userLeftMessageBroadcasted", {
+           name: user.name,
+           userId: user.userId,
+         });
+       }
+     });
 })
 
 const port = process.env.PORT || 5000;
