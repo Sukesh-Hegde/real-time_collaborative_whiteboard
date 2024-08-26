@@ -11,18 +11,6 @@ const CreateRoomForm = ({ uuid, socket, setUser }) => {
   const handleCreateRoom = (e) => {
     e.preventDefault();
 
-    // {name,roomId, userId, host, presenter}
-
-    // const myPeer = new Peer(undefined, {
-    //   host: "/",
-    //   port: 5001,
-    //   path: "/",
-    //   secure: false,
-    // });
-
-    // setMyPeer(myPeer);
-
-    // myPeer.on("open", (id) => {
     const roomData = {
       name,
       roomId,

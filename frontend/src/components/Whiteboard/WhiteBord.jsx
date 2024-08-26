@@ -14,6 +14,7 @@ const WhiteBord = ({
   socket,
 }) => {
   const [img, setImg] = useState(null);
+  const [isDrawing, setIsDrawing] = useState(false);
 
   useEffect(() => {
     socket.on("whiteBoardDataResponse", (data) => {
@@ -27,16 +28,14 @@ const WhiteBord = ({
         <img
           src={img}
           alt="Real time white board image shared by presenter"
-          // className="w-100 h-100"
-           style={{
-             height: window.innerHeight * 2,
-             width: "285%",
-           }}
+          style={{
+            height: window.innerHeight * 2,
+            width: "285%",
+          }}
         />
       </div>
     );
   }
-  const [isDrawing, setIsDrawing] = useState(false);
 
   useEffect(() => {
     const canvas = canvasRef.current;
