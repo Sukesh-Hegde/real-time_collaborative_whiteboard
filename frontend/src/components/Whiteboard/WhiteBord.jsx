@@ -22,21 +22,6 @@ const WhiteBord = ({
     });
   }, []);
 
-  if (!user?.presenter) {
-    return (
-      <div className="border border-dark border-3 h-100 w-100 overflow-hidden">
-        <img
-          src={img}
-          alt="Real time white board image shared by presenter"
-          style={{
-            height: window.innerHeight * 2,
-            width: "285%",
-          }}
-        />
-      </div>
-    );
-  }
-
   useEffect(() => {
     const canvas = canvasRef.current;
     canvas.height = window.innerHeight * 2;
@@ -109,6 +94,21 @@ const WhiteBord = ({
       socket.emit("whiteboardData", canvasImage);
     }
   }, [elements]);
+
+  if (!user?.presenter) {
+    return (
+      <div className="border border-dark border-3 h-100 w-100 overflow-hidden">
+        <img
+          src={img}
+          alt="Real time white board image shared by presenter"
+          style={{
+            height: window.innerHeight * 2,
+            width: "285%",
+          }}
+        />
+      </div>
+    );
+  }
 
   const handleMouseDown = (e) => {
     const { offsetX, offsetY } = e.nativeEvent;
